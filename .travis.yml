@@ -9,11 +9,9 @@ services:
 
 script:
   - if [ "$TRAVIS_BRANCH" == "alpha" ]; then
-      export DEPLOYMENT_ENV=alpha
-      export DOCKER_TAG=$TRAVIS_COMMIT
+      export DEPLOYMENT_ENV=alpha DOCKER_TAG=$TRAVIS_COMMIT
     elif [ "$TRAVIS_BRANCH" == "master" ]; then
-      export DEPLOYMENT_ENV=production
-      export DOCKER_TAG=$TRAVIS_TAG
+      export DEPLOYMENT_ENV=production DOCKER_TAG=$TRAVIS_TAG
     fi
   - export DOCKER_HUB_REPO=$DOCKER_HUB_REPO-$DEPLOYMENT_ENV
   - docker build -f deploy/$DEPLOYMENT_ENV/dockerfile -t $DOCKER_HUB_REPO:$DOCKER_TAG .
