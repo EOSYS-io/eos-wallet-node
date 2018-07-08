@@ -9,7 +9,7 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y supervisor
 COPY deploy/alpha/supervisord.conf /etc/supervisord.conf
 
-RUN apt-get remove -y gnupg && apt -y autoremove && rm -rf /var/lib/apt/lists/*
+RUN apt-get remove --purge --auto-remove -y gnupg && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV alpha
 ENV APP_DIR /app
