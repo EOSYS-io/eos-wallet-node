@@ -14,7 +14,7 @@ script:
       export DEPLOYMENT_ENV=production DOCKER_TAG=$TRAVIS_TAG;
     fi
   - export DOCKER_HUB_REPO=$DOCKER_HUB_REPO-$DEPLOYMENT_ENV
-  - docker build -f deploy/$DEPLOYMENT_ENV/dockerfile -t $DOCKER_HUB_REPO:$DOCKER_TAG .
+  - docker build -f deploy/$DEPLOYMENT_ENV/Dockerfile -t $DOCKER_HUB_REPO:$DOCKER_TAG .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_HUB_REPO:$DOCKER_TAG
   # update an AWS ECS service with the new image
