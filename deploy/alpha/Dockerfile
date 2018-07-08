@@ -2,7 +2,7 @@ FROM eosys/eos:v1.0.8
 
 # Install nodejs
 RUN apt-get update && apt-get install -y curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs
 
 # Set up supervisor
