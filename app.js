@@ -10,7 +10,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const Eos = require('eosjs')
 function creator() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
         return 'eoshubwallet'
     }
     else {
@@ -24,9 +24,9 @@ const Config = {
     verbose: true,
     sign: true
 }
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
     Config.chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-    Config.keyProvider = process.env.EOS_KEY_PROVIDER
+    Config.keyProvider = process.env.EOSHUBWALLET_KEY
     Config.httpEndpoint = 'https://rpc.eosys.io'
 }
 else {
@@ -69,24 +69,21 @@ app.post('/account', jsonParser, function(req, res) {
             name: accountName,
             owner: pubkey,
             active: pubkey
-        }
-        )
+        })
         
         tr.buyrambytes({
             payer: eosAccount,
             receiver: accountName,
             bytes: 8192
-        }
-        )
+        })
         
         tr.delegatebw({
             from: eosAccount,
             receiver: accountName,
-            stake_net_quantity: '100.0000 SYS',
-            stake_cpu_quantity: '100.0000 SYS',
+            stake_net_quantity: '0.1000 EOS',
+            stake_cpu_quantity: '0.1000 EOS',
             transfer: 0
-        }
-        )
+        })
     }).then(function(result) {
         res.send(result)
     }, function(error) {
