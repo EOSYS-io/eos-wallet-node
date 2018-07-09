@@ -89,7 +89,7 @@ app.post('/account', jsonParser, function(req, res) {
     }).then(function(result) {
         res.send(result)
     }, function(error) {
-        res.status(error.status)
+        res.status(JSON.parse(error).code)
         res.send(error)
     })
 })
