@@ -42,6 +42,7 @@ app.get('/', function(req, res) {
             res.send(result)
         }
         else {
+            res.status(error.status)
             res.send(error)
         }
     })
@@ -52,6 +53,7 @@ app.get('/account', function(req, res) {
     eos.getAccount(req.query.name).then(function(result) {
         res.send(result)
     }, function(error) {
+        res.status(error.status)
         res.send(error)
     })
 })
@@ -87,6 +89,7 @@ app.post('/account', jsonParser, function(req, res) {
     }).then(function(result) {
         res.send(result)
     }, function(error) {
+        res.status(error.status)
         res.send(error)
     })
 })
