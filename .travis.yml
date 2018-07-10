@@ -7,6 +7,16 @@ language: bash
 services:
 - docker
 
+install:
+  # install AWS SDK
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  # install necessary dependency for ecs-deploy
+  - sudo apt-get update
+  - sudo apt-get install jq -y
+  # install ecs-deploy
+  - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee -a /usr/bin/ecs-deploy
+  - sudo chmod +x /usr/bin/ecs-deploy
 script:
   - if [ "$TRAVIS_BRANCH" == "alpha" ]; then
       export DEPLOYMENT_ENV=alpha DOCKER_TAG=$TRAVIS_COMMIT;
@@ -18,7 +28,7 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_HUB_REPO:$DOCKER_TAG
   # update an AWS ECS service with the new image
-  # - ecs-deploy -c $AWS_CLUSTER_NAME -n $AWS_SERVICE_NAME-$DEPLOYMENT_ENV -i $DOCKER_HUB_REPO:$DOCKER_TAG -t 600
+  - ecs-deploy -c $AWS_CLUSTER_NAME -n $AWS_SERVICE_NAME-$DEPLOYMENT_ENV -i $DOCKER_HUB_REPO:$DOCKER_TAG -t 600
 
 notifications:
   email: false
