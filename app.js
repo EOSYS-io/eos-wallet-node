@@ -94,11 +94,11 @@ app.post('/account', jsonParser, function(req, res) {
         try {
             error_obj = JSON.parse(error)
             res.status(error_obj.code)
-            res.send(error)
         }
         catch(err) {
-            res.send(err)
+            res.status(500)
         }
+        res.send(error)
     })
 })
 
