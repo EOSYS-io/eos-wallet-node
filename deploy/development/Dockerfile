@@ -2,10 +2,10 @@ FROM eosys/eos-dev:v1.0.8
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-RUN sudo apt-get install -y nodejs
+RUN apt-get install -y nodejs
 
 # Set up supervisor
-RUN sudo apt-get install -y supervisor
+RUN apt-get install -y supervisor
 COPY deploy/development/supervisord.conf /etc/supervisord.conf
 
 ENV NODE_ENV development
