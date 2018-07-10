@@ -91,8 +91,14 @@ app.post('/account', jsonParser, function(req, res) {
     }).then(function(result) {
         res.send(result)
     }, function(error) {
-        res.status(JSON.parse(error).code)
-        res.send(error)
+        try {
+            error_obj = JSON.parse(error)
+            res.status(error_obj.code)
+            res.send(error)
+        }
+        catch(err) {
+            res.send(err)
+        }
     })
 })
 
