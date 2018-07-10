@@ -10,8 +10,8 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const Eos = require('eosjs')
 function creator() {
-    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
-        return 'eoshubwallet'
+    if (process.env.EOS_ACCOUNT) {
+        return process.env.EOS_ACCOUNT
     }
     else {
         return 'eosio'
@@ -26,7 +26,7 @@ const Config = {
 }
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
     Config.chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-    Config.keyProvider = process.env.EOSHUBWALLET_KEY
+    Config.keyProvider = process.env.EOS_PRIVATE_KEY
     Config.httpEndpoint = 'https://rpc.eosys.io'
 }
 else {

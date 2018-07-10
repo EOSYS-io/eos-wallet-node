@@ -16,4 +16,4 @@ while [ $loaded != true ]; do
 done
 
 curl --request POST --url $KEOSD_URL/v1/wallet/create --data '"default"'
-curl --request POST --url $KEOSD_URL/v1/wallet/import_key --data "[\"default\",\"$EOSHUBWALLET_KEY\"]"
+curl --request POST --url $KEOSD_URL/v1/wallet/import_key --data "[\"default\",\"$EOS_PRIVATE_KEY\"]"
