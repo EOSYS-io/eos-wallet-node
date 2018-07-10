@@ -59,6 +59,8 @@ app.get('/account', function(req, res) {
 })
 
 app.post('/account', jsonParser, function(req, res) {
+    if (!req.body) return res.sendStatus(400)
+    
     eos = Eos(Config)
     
     eosAccount = creator()
