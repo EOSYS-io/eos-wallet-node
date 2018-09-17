@@ -78,7 +78,7 @@ app.post('/account', jsonParser, function(req, res) {
         tr.buyrambytes({
             payer: eosAccount,
             receiver: accountName,
-            bytes: 8192
+            bytes: 3072
         })
         
         tr.delegatebw({
