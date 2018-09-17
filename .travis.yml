@@ -3,13 +3,15 @@ branches:
   - master
   - alpha
 sudo: required
-language: bash
+language: python
+python:
+  - "3.6"
 services:
 - docker
 
 install:
   # install AWS SDK
-  - pip install --user awscli
+  - pip install awscli
   - export PATH=$PATH:$HOME/.local/bin
   # install necessary dependency for ecs-deploy
   - sudo apt-get update
