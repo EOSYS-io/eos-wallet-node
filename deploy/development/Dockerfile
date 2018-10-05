@@ -1,4 +1,4 @@
-FROM eosys/eos-dev:v1.0.8
+FROM eosys/eos-dev:v1.2.4
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -

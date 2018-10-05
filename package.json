@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "eosjs": "^15.0.3",
+    "eosjs": "^16.x.x",
     "express": "^4.16.3"
   }
 }

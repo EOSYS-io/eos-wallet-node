@@ -1,4 +1,4 @@
-FROM eosys/eos:v1.0.8
+FROM eosys/eos:v1.2.4
 
 # Install nodejs
 RUN apt-get update && apt-get install -y curl gnupg
