@@ -9,11 +9,11 @@ regex="2.."
 while [ $loaded != true ]; do
     response=$(curl -s -o /dev/null -I -w "%{http_code}" $KEOSD_URL/v1/wallet/list_wallets)
     if [[ $response =~ $regex ]]; then
-      loaded=true
       echo "############ keosd loaded ############"
+      loaded=true
     else
-      sleep 5
       echo "waiting keosd loading....."
+      sleep 5
     fi
 done
 
