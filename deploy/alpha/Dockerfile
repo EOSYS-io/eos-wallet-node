@@ -12,6 +12,7 @@ COPY deploy/alpha/supervisord.conf /etc/supervisord.conf
 RUN apt-get remove --purge --auto-remove -y gnupg && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV alpha
+ENV DEBUG wallet-node
 ENV APP_DIR /app
 RUN mkdir -p $APP_DIR
 WORKDIR $APP_DIR

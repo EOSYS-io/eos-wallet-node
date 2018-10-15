@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const debug = require('debug')('wallet-node')
 const app = express()
 
 // create application/json parser
@@ -91,6 +92,7 @@ app.post('/account', jsonParser, function(req, res) {
     }).then(function(result) {
         res.send(result)
     }, function(error) {
+        debug(error)
         try {
             error_obj = JSON.parse(error)
             res.status(error_obj.code)
