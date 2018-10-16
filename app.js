@@ -86,7 +86,7 @@ app.post('/account', jsonParser, function(req, res) {
             from: eosAccount,
             receiver: accountName,
             stake_net_quantity: '0.0100 EOS',
-            stake_cpu_quantity: '0.0100 EOS',
+            stake_cpu_quantity: '0.1000 EOS',
             transfer: 1
         })
     }).then(function(result) {
