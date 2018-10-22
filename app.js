@@ -67,6 +67,9 @@ app.post('/account', jsonParser, function(req, res) {
     eosAccount = creator()
     accountName = req.body.account_name
     pubkey = req.body.pubkey
+    cpu = req.body.cpu === undefined? 0.1 : req.body.cpu
+    net = req.body.net === undefined? 0.01 : req.body.net
+    ram = req.body.ram === undefined? 3072 : req.body.ram
     
     eos.transaction(tr => {
         tr.newaccount({
@@ -79,14 +82,14 @@ app.post('/account', jsonParser, function(req, res) {
         tr.buyrambytes({
             payer: eosAccount,
             receiver: accountName,
-            bytes: 3072
+            bytes: ram
         })
         
         tr.delegatebw({
             from: eosAccount,
             receiver: accountName,
-            stake_net_quantity: '0.0100 EOS',
-            stake_cpu_quantity: '0.1000 EOS',
+            stake_cpu_quantity: `${cpu.toFixed(4)} EOS`,
+            stake_net_quantity: `${net.toFixed(4)} EOS`,
             transfer: 1
         })
     }).then(function(result) {
