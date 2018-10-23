@@ -27,12 +27,10 @@ const Config = {
 }
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
     Config.chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-    Config.keyProvider = process.env.EOS_PRIVATE_KEY
     Config.httpEndpoint = 'https://rpc.eosys.io'
 }
 else {
     Config.chainId = '1c6ae7719a2a3b4ecb19584a30ff510ba1b6ded86e1fd8b8fc22f1179c622a32'
-    Config.keyProvider = '5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p'
     Config.httpEndpoint = 'http://127.0.0.1:8000'
 }
 
@@ -62,31 +60,44 @@ app.get('/account', function(req, res) {
 app.post('/account', jsonParser, function(req, res) {
     if (!req.body) return res.sendStatus(400)
     
-    eos = Eos(Config)
-    
-    eosAccount = creator()
+    creatorEosAccount = req.body.creator_eos_account == undefined? creator() : req.body.creator_eos_account
+    switch (creatorEosAccount) {
+        case 'eoshubwallet':
+            Config.keyProvider = process.env.EOSHUBWALLET_PRIVATE_KEY
+            break;
+        case 'eoshubevent1':
+            Config.keyProvider = process.env.EOSHUBEVENT1_PRIVATE_KEY
+            break;
+        case 'eosio':
+            Config.keyProvider = '5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p'
+            break;
+        default:
+            Config.keyProvider = process.env.EOS_PRIVATE_KEY
+    }
     accountName = req.body.account_name
     pubkey = req.body.pubkey
     cpu = req.body.cpu === undefined? 0.1 : req.body.cpu
     net = req.body.net === undefined? 0.01 : req.body.net
     ram = req.body.ram === undefined? 3072 : req.body.ram
+
+    eos = Eos(Config)
     
     eos.transaction(tr => {
         tr.newaccount({
-            creator: eosAccount,
+            creator: creatorEosAccount,
             name: accountName,
             owner: pubkey,
             active: pubkey
         })
         
         tr.buyrambytes({
-            payer: eosAccount,
+            payer: creatorEosAccount,
             receiver: accountName,
             bytes: ram
         })
         
         tr.delegatebw({
-            from: eosAccount,
+            from: creatorEosAccount,
             receiver: accountName,
             stake_cpu_quantity: `${cpu.toFixed(4)} EOS`,
             stake_net_quantity: `${net.toFixed(4)} EOS`,
