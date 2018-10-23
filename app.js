@@ -10,6 +10,7 @@ const jsonParser = bodyParser.json()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const Eos = require('eosjs')
+
 function creator() {
     if (process.env.EOS_ACCOUNT) {
         return process.env.EOS_ACCOUNT
@@ -25,6 +26,7 @@ const Config = {
     verbose: true,
     sign: true
 }
+
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
     Config.chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
     Config.httpEndpoint = 'https://rpc.eosys.io'
@@ -32,6 +34,22 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'alpha') {
 else {
     Config.chainId = '1c6ae7719a2a3b4ecb19584a30ff510ba1b6ded86e1fd8b8fc22f1179c622a32'
     Config.httpEndpoint = 'http://127.0.0.1:8000'
+}
+
+function configKeyProvider(creatorEosAccount) {
+    switch (creatorEosAccount) {
+        case 'eoshubwallet':
+            Config.keyProvider = process.env.EOSHUBWALLET_PRIVATE_KEY
+            break;
+        case 'eoshubevent1':
+            Config.keyProvider = process.env.EOSHUBEVENT1_PRIVATE_KEY
+            break;
+        case 'eosio':
+            Config.keyProvider = '5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p'
+            break;
+        default:
+            Config.keyProvider = process.env.EOS_PRIVATE_KEY
+    }
 }
 
 app.get('/', function(req, res) {
@@ -61,19 +79,7 @@ app.post('/account', jsonParser, function(req, res) {
     if (!req.body) return res.sendStatus(400)
     
     creatorEosAccount = req.body.creator_eos_account == undefined? creator() : req.body.creator_eos_account
-    switch (creatorEosAccount) {
-        case 'eoshubwallet':
-            Config.keyProvider = process.env.EOSHUBWALLET_PRIVATE_KEY
-            break;
-        case 'eoshubevent1':
-            Config.keyProvider = process.env.EOSHUBEVENT1_PRIVATE_KEY
-            break;
-        case 'eosio':
-            Config.keyProvider = '5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p'
-            break;
-        default:
-            Config.keyProvider = process.env.EOS_PRIVATE_KEY
-    }
+    configKeyProvider(creatorEosAccount)
     accountName = req.body.account_name
     pubkey = req.body.pubkey
     cpu = req.body.cpu === undefined? 0.1 : req.body.cpu
