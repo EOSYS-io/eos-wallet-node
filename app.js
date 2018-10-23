@@ -44,6 +44,9 @@ function configKeyProvider(creatorEosAccount) {
         case 'eoshubevent1':
             Config.keyProvider = process.env.EOSHUBEVENT1_PRIVATE_KEY
             break;
+        case 'eoshubevent3':
+            Config.keyProvider = process.env.EOSHUBEVENT3_PRIVATE_KEY
+            break;
         case 'eosio':
             Config.keyProvider = '5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p'
             break;
